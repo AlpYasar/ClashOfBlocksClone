@@ -1,12 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Grid
 {
     public class TileCoordinates : MonoBehaviour
     {
         public Vector3 xOffset = new Vector3(0.5f, 0, 0.5f);
-        public float yOffset = 0.5f;
         [SerializeField] private Vector3Int intCoordinates;
         
         internal Vector3Int GetTilePosition() => intCoordinates;
@@ -21,13 +19,8 @@ namespace Grid
             GetCoordinates();
         }
         
-        public void GetCoordinates()
-        {
-            Debug.Log("OnEnable");
-            intCoordinates = ConvertPositionWithoutOffset(transform.localPosition);
-            Debug.Log("Coordinates: " + intCoordinates);
-        }
-
+        public void GetCoordinates() => intCoordinates = ConvertPositionWithoutOffset(transform.localPosition);
+        
         private Vector3Int ConvertPositionWithoutOffset(Vector3 transformPosition)
         {
             var withoutOffset = transformPosition - xOffset;
