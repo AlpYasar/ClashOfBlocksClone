@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField, BoxGroup("Cubes")] private GameObject enemiesCube;
     [SerializeField, BoxGroup("Atoms Variable")] private IntVariable playerCubeCount;
     [SerializeField, BoxGroup("Atoms Variable")] private IntVariable enemyCubeCount;
-    [SerializeField, BoxGroup("Tween"), ShowIf("isTweenActive")] private float tweenDuration = 1f;
+    [SerializeField, BoxGroup("Tween")] private float tweenDuration = 0.5f;
     [SerializeField, ReadOnly] private List<SpreadingTile> newPlayerTileCoords = new List<SpreadingTile>();
     [SerializeField, ReadOnly] private List<SpreadingTile> newEnemyTileCoords = new List<SpreadingTile>();
     [SerializeField, BoxGroup("Demo Enemy Pos")] private List<Vector3Int> enemyPositions = new List<Vector3Int>();
@@ -26,9 +26,9 @@ public class GameController : MonoBehaviour
     [SerializeField, BoxGroup("Events")] private IntEvent onNewPlayerCubeCount;
     
     private int _playerCubeCountToDrop;
-    private Transform tileTransform;
-    private Coroutine spreadCoroutine;
-    private Coroutine mexicoCoroutine;
+    private Transform _tileTransform;
+    private Coroutine _spreadCoroutine;
+    private Coroutine _mexicoCoroutine;
     private List<Sequence> _mexicoWaveSequence = new List<Sequence>();
 
     private const CubeType PlayerCube = CubeType.Player;
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
         newPlayerTileCoords.Clear();
         newEnemyTileCoords.Clear();
         onNewPlayerCubeCount.Raise(_playerCubeCountToDrop);
-        spreadCoroutine = null;
+        _spreadCoroutine = null;
     }
 
 
@@ -74,13 +74,6 @@ public class GameController : MonoBehaviour
             Debug.Log("Enemy cube placed at " + coord);
             SetNewTiles(tile, false);
         }
-    }
-
-    public void SelectedCoords(Vector3 coords)
-    {
-        //Convert the vector3 to vector3int
-        Vector3Int tileCoords = new Vector3Int(Mathf.RoundToInt(coords.x), Mathf.RoundToInt(coords.y), Mathf.RoundToInt(coords.z));
-        //CubeDrop(tileCoords);
     }
     
     public void CubeDrop(Vector3Int position, bool isFirst = true)
@@ -101,10 +94,10 @@ public class GameController : MonoBehaviour
             
         SetNewTiles(tile, true);
 
-        if (_playerCubeCountToDrop == 0 &&isFirst && spreadCoroutine == null)
+        if (_playerCubeCountToDrop == 0 &&isFirst && _spreadCoroutine == null)
         {
             onLevelStarted.Raise();
-            spreadCoroutine = StartCoroutine(SpreadCubes());
+            _spreadCoroutine = StartCoroutine(SpreadCubes());
         }
     }
 
@@ -167,10 +160,10 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(tweenDuration);
         }
 
-        if (spreadCoroutine != null)
+        if (_spreadCoroutine != null)
         {
-            StopCoroutine(spreadCoroutine);
-            spreadCoroutine = null;
+            StopCoroutine(_spreadCoroutine);
+            _spreadCoroutine = null;
         }
         
         LevelEnded();
@@ -178,21 +171,21 @@ public class GameController : MonoBehaviour
 
     public void StopCoroutines()
     {
-        if (spreadCoroutine != null)
+        if (_spreadCoroutine != null)
         {
-            StopCoroutine(spreadCoroutine);
-            spreadCoroutine = null;
+            StopCoroutine(_spreadCoroutine);
+            _spreadCoroutine = null;
         }
         
-        if (mexicoCoroutine != null)
+        if (_mexicoCoroutine != null)
         {
-            StopCoroutine(mexicoCoroutine);
-            mexicoCoroutine = null;
+            StopCoroutine(_mexicoCoroutine);
+            _mexicoCoroutine = null;
         }
     }
     private void LevelEnded()
     {
-        mexicoCoroutine = StartCoroutine(DoMexicoWave());
+        _mexicoCoroutine = StartCoroutine(DoMexicoWave());
         onLevelEnd.Raise();
     }
 
@@ -219,20 +212,11 @@ public class GameController : MonoBehaviour
         
         return direction;
     }
-    
-    [Button]
-    private void StopSpreadCoroutine()
-    {
-        if (spreadCoroutine != null)
-        {
-            StopCoroutine(spreadCoroutine);
-        }
-    }
 
     private IEnumerator DoMexicoWave()
     {
         yield return new WaitForSeconds(1f);
-        var waitTime = new WaitForSeconds(Time.fixedDeltaTime*2);
+        var waitTime = new WaitForSeconds(Time.fixedDeltaTime);
         foreach (var element in currentGrid.TileDict)
         {
             var tween = element.Value.OccupantTransform.DOLocalJump(Vector3.zero, 0.5f, 1, Random.Range(2f, 1.5f))
@@ -244,9 +228,9 @@ public class GameController : MonoBehaviour
     
     public void StopMexicoWave()
     {
-        if (mexicoCoroutine != null)
+        if (_mexicoCoroutine != null)
         {
-            StopCoroutine(mexicoCoroutine);
+            StopCoroutine(_mexicoCoroutine);
         }
         
         foreach (var tween in _mexicoWaveSequence)

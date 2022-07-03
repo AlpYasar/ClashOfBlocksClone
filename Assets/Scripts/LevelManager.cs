@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Scriptable;
+﻿using Scriptable;
 using UnityEngine;
 using NaughtyAttributes;
 using DG.Tweening;
@@ -36,7 +34,6 @@ public class LevelManager : MonoBehaviour
         SmoothLevelPassing();
     }
     
-    [Button]
     public void LoadLevel(int level)
     {
         levelIndex = level;

@@ -21,16 +21,16 @@ MonoBehaviour:
     - {x: 1, y: 0, z: 1}
     - {x: 3, y: 0, z: 1}
     playerCubeCount: 2
-  - levelEnvironment: {fileID: 4852703803378642669, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+  - levelEnvironment: {fileID: 4126703377225124038, guid: fd38f053350f65240a0bf57a1a7dc114,
       type: 3}
     tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
       type: 3}
     hostileCubePositions:
-    - {x: 10, y: 0, z: 2}
+    - {x: 5, y: 0, z: 4}
     playerCubeCount: 1
   - levelEnvironment: {fileID: 8340911117962418312, guid: d9a87cf8d6fc3af4daa7c355a74d1c15,
       type: 3}
-    tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+    tileMapGameObject: {fileID: 8340911116887828904, guid: d9a87cf8d6fc3af4daa7c355a74d1c15,
       type: 3}
     hostileCubePositions:
     - {x: 4, y: 0, z: 1}
@@ -38,7 +38,7 @@ MonoBehaviour:
     playerCubeCount: 1
   - levelEnvironment: {fileID: 5951952230916452390, guid: 2f27dbfa35c30c4429fd1db162df4e66,
       type: 3}
-    tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+    tileMapGameObject: {fileID: 5951952229839356166, guid: 2f27dbfa35c30c4429fd1db162df4e66,
       type: 3}
     hostileCubePositions:
     - {x: 3, y: 0, z: 3}
@@ -46,7 +46,7 @@ MonoBehaviour:
     playerCubeCount: 1
   - levelEnvironment: {fileID: 8983469540454479353, guid: 9862fc567d31d5a44bc403acc21a9192,
       type: 3}
-    tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+    tileMapGameObject: {fileID: 8983469539377382617, guid: 9862fc567d31d5a44bc403acc21a9192,
       type: 3}
     hostileCubePositions:
     - {x: 5, y: 0, z: 5}
@@ -54,8 +54,63 @@ MonoBehaviour:
     playerCubeCount: 1
   - levelEnvironment: {fileID: 6532468040155407644, guid: a5967d83adc37fa4491e140dbb184f7f,
       type: 3}
-    tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
       type: 3}
     hostileCubePositions:
     - {x: 3, y: 0, z: 7}
     playerCubeCount: 1
+  - levelEnvironment: {fileID: 3837294296392350932, guid: 5245b96899b35fd469a311b6a9e2a199,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 5, y: 0, z: 8}
+    playerCubeCount: 1
+  - levelEnvironment: {fileID: 6126049381455520175, guid: d7771b28583813a4d9deb0f16d91c0ba,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 4, y: 0, z: 2}
+    - {x: 10, y: 0, z: 14}
+    playerCubeCount: 2
+  - levelEnvironment: {fileID: 8807301532596293205, guid: 97f44cc1b15d3a8468044260e4dc603b,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 2, y: 0, z: 2}
+    - {x: 8, y: 0, z: 2}
+    - {x: 14, y: 0, z: 2}
+    playerCubeCount: 2
+  - levelEnvironment: {fileID: 5671297767011812067, guid: fb2d62d3c718ae94fa9e3bf0e72bf477,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 5, y: 0, z: 3}
+    - {x: 11, y: 0, z: 3}
+    - {x: 8, y: 0, z: 10}
+    playerCubeCount: 2
+  - levelEnvironment: {fileID: 4126703377225124038, guid: fd38f053350f65240a0bf57a1a7dc114,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 5, y: 0, z: 3}
+    playerCubeCount: 1
+  - levelEnvironment: {fileID: 4852703803378642669, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 10, y: 0, z: 2}
+    playerCubeCount: 1
+  - levelEnvironment: {fileID: 4852703803378642669, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+      type: 3}
+    tileMapGameObject: {fileID: 6532468039088804924, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    hostileCubePositions:
+    - {x: 10, y: 0, z: 2}
+    - {x: 3, y: 0, z: 3}
+    playerCubeCount: 2

@@ -29,13 +29,11 @@ namespace Tile
             tileNeighboursDict.Clear();
 
             var tileCount = 0;
-            Debug.Log("Children count: " + currentTileMapGameObject.transform.childCount);
             foreach (var rectTile in currentTileMapGameObject.transform.GetComponentsInChildren<RectTile>())
             {
                 tileCount++;
                 
                 rectTile.TileCoordinates.GetCoordinates();
-                Debug.Log("Tile: " + tileCount + " " + rectTile.TileCoords);
                 rectTileDict.Add(rectTile.TileCoords, rectTile);
                 //tileNeighboursDict.Add(rectTile.TileCoords, GetNeighborTiles(rectTile.TileCoords));
             }
