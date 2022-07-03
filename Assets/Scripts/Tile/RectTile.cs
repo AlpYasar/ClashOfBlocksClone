@@ -21,11 +21,11 @@ namespace Tile
         private void OnEnable()
         {
             t = transform;
+            isOccupied = false;
         }
 
         public void SetCube(GameObject newCube)
         {
-            Debug.Log("Setting cube");
             newCube.transform.DOKill();
             occupantCube = newCube;
             newCube.transform.SetParent(t);

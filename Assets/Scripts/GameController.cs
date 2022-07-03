@@ -12,11 +12,11 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private ObjectsPool objectPool;
     [SerializeField] private Tile.Grid currentGrid;
+    [SerializeField] private GameManager gameManager;
     [SerializeField, BoxGroup("Cubes")] private GameObject playersCube;
     [SerializeField, BoxGroup("Cubes")] private GameObject enemiesCube;
     [SerializeField, BoxGroup("Atoms Variable")] private IntVariable playerCubeCount;
     [SerializeField, BoxGroup("Atoms Variable")] private IntVariable enemyCubeCount;
-    [SerializeField, BoxGroup("Tween")] private bool isTweenActive = true;
     [SerializeField, BoxGroup("Tween"), ShowIf("isTweenActive")] private float tweenDuration = 1f;
     [SerializeField, ReadOnly] private List<SpreadingTile> newPlayerTileCoords = new List<SpreadingTile>();
     [SerializeField, ReadOnly] private List<SpreadingTile> newEnemyTileCoords = new List<SpreadingTile>();
@@ -87,22 +87,23 @@ public class GameController : MonoBehaviour
     {
         
         if (_playerCubeCountToDrop <= 0) return;
-
-        RectTile tile = currentGrid.GetRectTile(position);
         
+        RectTile tile = currentGrid.GetRectTile(position);
+
         if (tile == null || tile.isOccupied) return;
-        onLevelStarted.Raise();
         var playerCube = objectPool.GetFromPool(playersCube);
         tile.SetCube(playerCube, null , tweenDuration, isFirst);
 
         playerCubeCount.Value++;
         _playerCubeCountToDrop--;
         onNewPlayerCubeCount.Raise(_playerCubeCountToDrop);
+        gameManager.OpenRestartButton();
             
         SetNewTiles(tile, true);
 
         if (_playerCubeCountToDrop == 0 &&isFirst && spreadCoroutine == null)
         {
+            onLevelStarted.Raise();
             spreadCoroutine = StartCoroutine(SpreadCubes());
         }
     }
@@ -175,6 +176,20 @@ public class GameController : MonoBehaviour
         LevelEnded();
     }
 
+    public void StopCoroutines()
+    {
+        if (spreadCoroutine != null)
+        {
+            StopCoroutine(spreadCoroutine);
+            spreadCoroutine = null;
+        }
+        
+        if (mexicoCoroutine != null)
+        {
+            StopCoroutine(mexicoCoroutine);
+            mexicoCoroutine = null;
+        }
+    }
     private void LevelEnded()
     {
         mexicoCoroutine = StartCoroutine(DoMexicoWave());

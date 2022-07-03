@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -14,12 +15,19 @@ public class UIManager : MonoBehaviour
     [SerializeField, BoxGroup("Texts")] private TextMeshProUGUI redPerText;
     [SerializeField, BoxGroup("Buttons")] private GameObject restartButton;
     [SerializeField, BoxGroup("Buttons")] private GameObject continueButton;
+    [SerializeField, BoxGroup("Buttons")] private GameObject tryAgainButton;
     [SerializeField, BoxGroup("Cube Count")] private TextMeshProUGUI cubeCountText;
     [SerializeField, BoxGroup("Cube Count")] private GameObject cubeImage;
     [SerializeField, BoxGroup("Atom Variable")] private IntVariable greenCount;
     [SerializeField, BoxGroup("Atom Variable")] private IntVariable redCount;
     
-    
+    private Vector3 textsScaleSize;
+
+    private void Awake()
+    {
+        textsScaleSize = greenPerText.transform.localScale;
+    }
+
     [Button]
     public void OpenAndSetPercentages()
     {
@@ -41,7 +49,19 @@ public class UIManager : MonoBehaviour
         DOVirtual.Float(0, redPercent, 1, (float value) =>
         {
             redPerText.text = $"{value:0.#} %";
-        }).OnComplete(OpenContinueButton);
+        }).OnComplete(() =>
+        {
+            if (greenPercent > redPercent)
+            {
+                OpenContinueButton();
+                greenPerText.transform.DOPunchScale(Vector3.one * 0.5f, 1f, 4, 0.2f).SetDelay(1f).SetLoops(-1, LoopType.Yoyo);
+            }
+            else
+            {
+                OpenTryAgainButton();
+                redPerText.transform.DOPunchScale(Vector3.one * 0.5f, 1f, 4, 0.2f).SetDelay(1f).SetLoops(-1, LoopType.Yoyo);
+            }
+        });
     }
     
     public void SetLevelText(int level)
@@ -69,11 +89,29 @@ public class UIManager : MonoBehaviour
                 cubeCountText.text = count.ToString();
             }
         });
-
+    }
+    
+    public void SetDisActiveContinueButtonsAndTexts()
+    {
+        continueButton.SetActive(false);
+        tryAgainButton.SetActive(false);
+        restartButton.SetActive(false);
+        greenPerText.gameObject.SetActive(false);
+        redPerText.gameObject.SetActive(false);
+        
+        
+        greenPerText.transform.DOKill();
+        greenPerText.transform.localScale = textsScaleSize;
+        redPerText.transform.DOKill();
+        redPerText.transform.localScale = textsScaleSize;
     }
 
-    private void OpenContinueButton()
+    private void OpenContinueButton() => continueButton.SetActive(true);
+
+    public void OpenTryAgainButton() => tryAgainButton.SetActive(true);
+
+    public void SetActiveRestartButton(bool active)
     {
-        continueButton.SetActive(true);
+        restartButton.SetActive(active);
     }
 }

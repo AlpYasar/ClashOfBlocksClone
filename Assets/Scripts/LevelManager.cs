@@ -17,14 +17,38 @@ public class LevelManager : MonoBehaviour
     [SerializeField, BoxGroup("Tween")] private float tweenDuration;
     [SerializeField] private GameController gameController; //0 is the first level
     [SerializeField] private Tile.Grid grid;
-    
 
+    #region Properties
+    public int LevelIndex { get => levelIndex; set => levelIndex = value; }
+    public Levels Levels => levels;
+    #endregion
+    
     [Button]
-    public void GetNextLevel()
+    public void NextLevel()
     {
         levelIndex++;
+        SmoothLevelPassing();
+    }
+
+    [Button]
+    public void RestartLevel()
+    {
+        SmoothLevelPassing();
+    }
+    
+    [Button]
+    public void LoadLevel(int level)
+    {
+        levelIndex = level;
+        SmoothLevelPassing();
+    }
+
+    private void SmoothLevelPassing()
+    {
+        //Stop the Coroutines if it is running
+        gameController.StopCoroutines();
         oldLevelObject = currentLevelObject;
-        currentLevel = levels.GetLevel(levelIndex);
+        currentLevel = levels.GetLevel(levelIndex % levels.Count);
         currentLevelObject = Instantiate(currentLevel.levelEnvironment, new Vector3(0, 0, 45), Quaternion.identity);
         currentLevelObject.SetActive(true);
         clickIsPermitted.Value = false;
@@ -38,11 +62,11 @@ public class LevelManager : MonoBehaviour
                 clickIsPermitted.Value = true;
             });
             currentLevelObject.transform.DOMove(Vector3.zero, tweenDuration);
+            
+            var tileMapObject = currentLevelObject.GetComponent<LevelParent>().tileMap;
         
-            grid.NewLevel(currentLevel.tileMapGameObject);
+            grid.NewLevel(tileMapObject);
             gameController.SetNewLevel(currentLevel.playerCubeCount, currentLevel.hostileCubePositions);
         });
-        
-
     }
 }
