@@ -52,3 +52,10 @@ MonoBehaviour:
     - {x: 5, y: 0, z: 5}
     - {x: 9, y: 0, z: 9}
     playerCubeCount: 1
+  - levelEnvironment: {fileID: 6532468040155407644, guid: a5967d83adc37fa4491e140dbb184f7f,
+      type: 3}
+    tileMapGameObject: {fileID: 4852703804457951181, guid: 30eedadbe90a2e34cbc0cc1f897781a4,
+      type: 3}
+    hostileCubePositions:
+    - {x: 3, y: 0, z: 7}
+    playerCubeCount: 1
