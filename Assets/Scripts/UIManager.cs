@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityAtoms.BaseAtoms;
 using NaughtyAttributes;
 using TMPro;
@@ -13,6 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField, BoxGroup("Texts")] private TextMeshProUGUI levelText;
     [SerializeField, BoxGroup("Texts")] private TextMeshProUGUI greenPerText;
     [SerializeField, BoxGroup("Texts")] private TextMeshProUGUI redPerText;
+    [SerializeField, BoxGroup("Texts")] private GameObject levelPassedText;
+    [SerializeField, BoxGroup("Texts")] private GameObject levelFailedText;
     [SerializeField, BoxGroup("Buttons")] private GameObject restartButton;
     [SerializeField, BoxGroup("Buttons")] private GameObject continueButton;
     [SerializeField, BoxGroup("Buttons")] private GameObject tryAgainButton;
@@ -21,11 +19,11 @@ public class UIManager : MonoBehaviour
     [SerializeField, BoxGroup("Atom Variable")] private IntVariable greenCount;
     [SerializeField, BoxGroup("Atom Variable")] private IntVariable redCount;
     
-    private Vector3 textsScaleSize;
+    private Vector3 _textsScaleSize;
 
     private void Awake()
     {
-        textsScaleSize = greenPerText.transform.localScale;
+        _textsScaleSize = greenPerText.transform.localScale;
     }
 
     [Button]
@@ -41,12 +39,12 @@ public class UIManager : MonoBehaviour
         var greenPercent = (float) greenCount.Value / total * 100;
         var redPercent = (float) redCount.Value / total * 100;
         
-        DOVirtual.Float(0, greenPercent, 1, (float value) =>
+        DOVirtual.Float(0, greenPercent, 1, value =>
         {
             greenPerText.text = $"{value:0.#} %";
         });
         
-        DOVirtual.Float(0, redPercent, 1, (float value) =>
+        DOVirtual.Float(0, redPercent, 1, value =>
         {
             redPerText.text = $"{value:0.#} %";
         }).OnComplete(() =>
@@ -54,12 +52,14 @@ public class UIManager : MonoBehaviour
             if (greenPercent > redPercent)
             {
                 OpenContinueButton();
-                greenPerText.transform.DOPunchScale(Vector3.one * 0.5f, 1f, 4, 0.2f).SetDelay(1f).SetLoops(-1, LoopType.Yoyo);
+                levelPassedText.SetActive(true);
+                greenPerText.transform.DOPunchScale(Vector3.one * 0.3f, 1f, 3, 0).SetDelay(1.5f).SetLoops(-1, LoopType.Yoyo);
             }
             else
             {
                 OpenTryAgainButton();
-                redPerText.transform.DOPunchScale(Vector3.one * 0.5f, 1f, 4, 0.2f).SetDelay(1f).SetLoops(-1, LoopType.Yoyo);
+                levelFailedText.SetActive(true);
+                redPerText.transform.DOPunchScale(Vector3.one * 0.3f, 1f, 3, 0).SetDelay(1.5f).SetLoops(-1, LoopType.Yoyo);
             }
         });
     }
@@ -99,11 +99,12 @@ public class UIManager : MonoBehaviour
         greenPerText.gameObject.SetActive(false);
         redPerText.gameObject.SetActive(false);
         
-        
+        levelPassedText.SetActive(false);
+        levelFailedText.SetActive(false);
         greenPerText.transform.DOKill();
-        greenPerText.transform.localScale = textsScaleSize;
+        greenPerText.transform.localScale = _textsScaleSize;
         redPerText.transform.DOKill();
-        redPerText.transform.localScale = textsScaleSize;
+        redPerText.transform.localScale = _textsScaleSize;
     }
 
     private void OpenContinueButton() => continueButton.SetActive(true);
